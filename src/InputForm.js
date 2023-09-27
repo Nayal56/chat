@@ -4,6 +4,7 @@ import './InputForm.css';
 const InputForm = ({ onMultiply }) => {
   const [input, setInput] = useState('');
   const [messages, setMessages] = useState([]);
+  const [darkMode, setDarkMode] = useState(false);
 
   const handleInputChange = (e) => {
     setInput(e.target.value);
@@ -21,9 +22,13 @@ const InputForm = ({ onMultiply }) => {
     }
   };
 
+  const toggleDarkMode = () => {
+    setDarkMode(!darkMode);
+  };
+
   return (
-    <div className="chat-container">
-      <div className="chat-messages">
+    <div className={`chat-container ${darkMode ? 'dark-mode' : ''}`}>
+      <div className="chat-history">
         {messages.map((message, index) => (
           <div
             key={index}
@@ -33,16 +38,33 @@ const InputForm = ({ onMultiply }) => {
           </div>
         ))}
       </div>
-      <form onSubmit={handleFormSubmit} className="chat-input">
-        <input
-          type="text"
-          value={input}
-          onChange={handleInputChange}
-          placeholder="Send a message ...."
-          autoFocus
-        />
-        <button type="submit">Send</button>
-      </form>
+      <div className="left-navbar">
+        <h2>Chat History</h2>
+        <ul>
+          {messages.map((message, index) => (
+            <li key={index}>
+              <span className={message.isUser ? 'user-message' : 'bot-message'}>
+                {message.text}
+              </span>
+            </li>
+          ))}
+        </ul>
+      </div>
+      <div className="chat-input-container">
+        <form onSubmit={handleFormSubmit} className="chat-input">
+          <input
+            type="text"
+            value={input}
+            onChange={handleInputChange}
+            placeholder="Type a number..."
+            autoFocus
+          />
+          <button type="submit">Send</button>
+        </form>
+      </div>
+      <button className="dark-mode-button" onClick={toggleDarkMode}>
+        {darkMode ? 'Light Mode' : 'Dark Mode'}
+      </button>
     </div>
   );
 };
